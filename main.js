@@ -2,14 +2,10 @@ $(document).ready(function() {
 
 	var map,
 		infoWindow = null,
-		markers = {
-			crime_1: [],
-			crime_2: [],
-			crime_3: [],
-			crime_4: [],
-			crime_5: []
-		},
-		boxes = $('#filters input:checkbox');
+		markers = [],
+		boxes = $('#filters input:checkbox'),
+		g_day = null,
+		g_crime = null;
 
 	function initialize() {
 		var mapOptions = {
@@ -31,18 +27,21 @@ $(document).ready(function() {
 
 				var content = '<p><strong>'+data[i].crime+'</strong></p><p>'+data[i].day+' December 2014<p>';
 
-				addPoint(location, content, data[i].crime_id);
+				addPoint(location, content, data[i].crime_id, data[i].day);
 			};
 		}
 	});
 
-	function addPoint(position, content, crime_id) {
+	function addPoint(position, content, crime_id, day) {
 		var marker = new google.maps.Marker({
 			position: position,
 			map: map
 		});
 
-		markers['crime_'+crime_id].push(marker);
+		markers.push(marker);
+
+		marker.crime_id = crime_id;
+		marker.day = day;
 
 		google.maps.event.addListener(marker, 'click', function() {
 			if (infoWindow) {
@@ -61,17 +60,33 @@ $(document).ready(function() {
 		var crime_id = $(e.currentTarget).data('crimeId');
 		var checked = $(e.currentTarget).prop('checked');
 
-		$(markers['crime_'+crime_id]).each(function(id, marker) {
-			if (checked) {
+		g_crime = crime_id;
+
+		$(markers).each(function(id, marker) {
+			if (marker.crime_id == crime_id) {
+				if (checked)
+					marker.setVisible(true);
+				else
+					marker.setVisible(false);
+			}
+		})
+	});
+
+	$('input[type=range]').on("change mousemove", function() {
+		var day = $(this).val();
+
+		g_day = day;
+
+		$(this).next().html(day);
+
+		$(markers).each(function(id, marker) {
+			if (marker.day <= day) {
 				marker.setVisible(true);
 			}
 			else {
 				marker.setVisible(false);
 			}
-			// setTimeout(function() {
-			// 	marker.setVisible(true);
-			// }, 1000);
-		})
+		});
 	});
 
 });
