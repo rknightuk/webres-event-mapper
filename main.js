@@ -5,8 +5,8 @@ $(document).ready(function() {
 		markers = [],
 		boxes = $('#filters input:checkbox'),
 		g_day = 31,
-		g_crime = null;
 		g_single = false;
+		g_crimes = [1,2,3,4,5];
 
 	function initialize() {
 		var mapOptions = {
@@ -62,7 +62,7 @@ $(document).ready(function() {
 		var crime_id = $(e.currentTarget).data('crimeId');
 		var checked = $(e.currentTarget).prop('checked');
 
-		g_crime = crime_id;
+		setFilters();
 
 		$(markers).each(function(id, marker) {
 			if (marker.crime_id == crime_id) {
@@ -107,6 +107,8 @@ $(document).ready(function() {
 
 	function sortMarkers(day) {
 		$(markers).each(function(id, marker) {
+			if (g_crimes.indexOf(marker.crime_id) == -1) return;
+			
 			if (g_single) {
 				if (marker.day == day) {
 					marker.setVisible(true);
@@ -122,6 +124,16 @@ $(document).ready(function() {
 				else {
 					marker.setVisible(false);
 				}
+			}
+		});
+	}
+
+	function setFilters() {
+		g_crimes = [];
+
+		$(boxes).each(function(box) {
+			if ($(this).prop('checked')) {
+				g_crimes.push($(this).data('crime-id'));
 			}
 		});
 	}
