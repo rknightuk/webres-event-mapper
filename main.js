@@ -4,7 +4,7 @@ $(document).ready(function() {
 		infoWindow = null,
 		markers = [],
 		boxes = $('#filters input:checkbox'),
-		g_day = null,
+		g_day = 31,
 		g_crime = null;
 		g_single = false;
 
@@ -37,7 +37,7 @@ $(document).ready(function() {
 		var marker = new google.maps.Marker({
 			position: position,
 			map: map,
-			icon: 'icons/red.png'
+			icon: 'icons/'+crime_id+'.png'
 		});
 
 		markers.push(marker);
