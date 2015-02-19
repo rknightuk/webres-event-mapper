@@ -6,6 +6,7 @@ $(document).ready(function() {
 		boxes = $('#filters input:checkbox'),
 		g_day = null,
 		g_crime = null;
+		g_single = false;
 
 	function initialize() {
 		var mapOptions = {
@@ -35,7 +36,8 @@ $(document).ready(function() {
 	function addPoint(position, content, crime_id, day) {
 		var marker = new google.maps.Marker({
 			position: position,
-			map: map
+			map: map,
+			icon: 'icons/red.png'
 		});
 
 		markers.push(marker);
@@ -77,16 +79,51 @@ $(document).ready(function() {
 
 		g_day = day;
 
-		$(this).next().html(day);
+		$(this).next().html(day+getOrdinal(day));
 
+		sortMarkers(day);
+	});
+
+	$('#single-day').change(function(e) {
+		var checked = $(e.currentTarget).prop('checked');
+
+		g_single = checked ? true : false;
+
+		sortMarkers(g_day);
+	});
+
+	function getOrdinal(day)
+	{
+		if (day >= 11 && day <= 13) return 'th';
+
+		day = day % 10;
+
+		if (day == 1) return 'st';
+        if (day == 2) return 'nd';
+        if (day == 3) return 'rd';
+
+        return 'th';
+	}
+
+	function sortMarkers(day) {
 		$(markers).each(function(id, marker) {
-			if (marker.day <= day) {
-				marker.setVisible(true);
+			if (g_single) {
+				if (marker.day == day) {
+					marker.setVisible(true);
+				}
+				else {
+					marker.setVisible(false);
+				}
 			}
 			else {
-				marker.setVisible(false);
+				if (marker.day <= day) {
+					marker.setVisible(true);
+				}
+				else {
+					marker.setVisible(false);
+				}
 			}
 		});
-	});
+	}
 
 });
