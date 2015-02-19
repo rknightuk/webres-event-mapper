@@ -108,7 +108,7 @@ $(document).ready(function() {
 	function sortMarkers(day) {
 		$(markers).each(function(id, marker) {
 			if (g_crimes.indexOf(marker.crime_id) == -1) return;
-			
+
 			if (g_single) {
 				if (marker.day == day) {
 					marker.setVisible(true);
