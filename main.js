@@ -42,7 +42,7 @@ $(document).ready(function() {
 			
 				var location = new google.maps.LatLng(data[i].Latitude,data[i].Longitude);
 
-				var content = '<p><strong>'+data[i].crime+'</strong></p><p>'+data[i].day+' January 2014<p>';
+				var content = '<p><strong>'+data[i].crime_type+'</strong></p><p>'+data[i].day+' January 2014<p>';
 
 				var crime_id = getCrimeId(data[i].crime_type);
 				var crime_type = data[i].crime_type;
