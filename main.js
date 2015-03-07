@@ -178,6 +178,7 @@ $(document).ready(function() {
 	}
 
 	$('.toggle-filters').click(function(e){
+		e.preventDefault();
 		var text = $(e.currentTarget).text();
 
 		if (text == 'Uncheck All') {
