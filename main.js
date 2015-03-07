@@ -177,4 +177,28 @@ $(document).ready(function() {
 		});
 	}
 
+	$('.toggle-filters').click(function(e){
+		var text = $(e.currentTarget).text();
+
+		if (text == 'Uncheck All') {
+			$('#filters input:checkbox').removeAttr('checked');
+			$(this).text('Check All');
+			$(markers).each(function(id, marker) {
+				marker.setVisible(false);
+			})
+		}
+		else {
+			$('#filters input:checkbox').prop('checked', true);
+			$(this).text('Uncheck All');
+			
+			setFilters();
+
+			$(markers).each(function(id, marker) {
+					marker.setVisible(true);
+			});
+		}
+
+		setFilters();
+	});
+
 });
